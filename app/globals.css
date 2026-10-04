@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* <html class="dark"> 기준으로 dark: 변형을 적용한다 (lib/theme.ts 가 클래스를 관리) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  /* 날짜 선택기, select 드롭다운, 스크롤바 등 브라우저 기본 UI 도 어둡게 */
+  color-scheme: dark;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+}
