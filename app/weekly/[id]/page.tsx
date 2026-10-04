@@ -4,16 +4,25 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import ProgressBar from "@/components/shared/ProgressBar";
-import { inputClass } from "@/components/shared/styles";
+import {
+  cardClass,
+  dangerButtonClass,
+  errorTextClass,
+  iconButtonClass,
+  inputClass,
+  labelClass,
+  linkClass,
+  pageTitleClass,
+  primaryButtonClass,
+  secondaryButtonClass,
+  sectionTitleClass,
+} from "@/components/shared/styles";
 import WeekGrid from "@/components/weekly/WeekGrid";
 import WeeklyGoalItem from "@/components/weekly/WeeklyGoalItem";
 import { ApiClientError } from "@/lib/apiClient";
 import { formatWeekRange } from "@/lib/date";
 import { useStore } from "@/store";
 import { MAX_WEEKLY_GOALS, type WeeklyPlan } from "@/types";
-
-const cardClass = "rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4";
-const buttonClass = "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50";
 
 function errMsg(e: unknown): string {
   return e instanceof Error ? e.message : "요청에 실패했습니다.";
@@ -38,8 +47,8 @@ export default function Page() {
   if (notFound) {
     return (
       <div className="flex flex-col items-start gap-2">
-        <p className="text-slate-700 dark:text-neutral-300">주간 계획을 찾을 수 없습니다</p>
-        <Link href="/weekly" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+        <p className="text-ink">주간 계획을 찾을 수 없습니다</p>
+        <Link href="/weekly" className={`${linkClass} text-sm`}>
           주간 계획 목록으로
         </Link>
       </div>
@@ -47,11 +56,11 @@ export default function Page() {
   }
   if (!plan) {
     return error ? (
-      <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+      <p role="alert" className={errorTextClass}>
         {error}
       </p>
     ) : (
-      <p className="text-slate-500 dark:text-neutral-400">불러오는 중...</p>
+      <p className="text-muted">불러오는 중...</p>
     );
   }
   return <PlanDetail key={plan._id} plan={plan} />;
@@ -103,20 +112,20 @@ function PlanDetail({ plan }: { plan: WeeklyPlan }) {
     });
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-2">
-        <div>
-          <Link href="/weekly" className="text-xs text-slate-500 dark:text-neutral-400 hover:underline">
-            ← 주간 계획
+        <div className="flex items-center gap-3">
+          <Link href="/weekly" aria-label="주간 계획 목록으로" className={`${iconButtonClass} bg-surface-strong text-ink`}>
+            ←
           </Link>
-          <h1 className="text-xl font-bold">{formatWeekRange(plan.weekStart)}</h1>
+          <h1 className={pageTitleClass}>{formatWeekRange(plan.weekStart)}</h1>
         </div>
-        <button type="button" onClick={onDelete} className="rounded-lg border border-red-300 dark:border-red-500/40 px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10">
+        <button type="button" onClick={onDelete} className={dangerButtonClass}>
           삭제
         </button>
       </div>
       {error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className={errorTextClass}>
           {error}
         </p>
       )}
@@ -126,18 +135,18 @@ function PlanDetail({ plan }: { plan: WeeklyPlan }) {
           <div className="flex-1">
             <ProgressBar label="주간 진행률" value={plan.progress} />
           </div>
-          <span className="text-sm text-slate-600 dark:text-neutral-400">
+          <span className="text-sm text-muted">
             완료 {plan.todoStats.done} / 전체 {plan.todoStats.total}
           </span>
         </div>
       </section>
 
-      <section className={`${cardClass} flex flex-col gap-3`}>
+      <section className={`${cardClass} flex flex-col gap-5`}>
         <div>
-          <h2 className="font-semibold">주간 목표</h2>
-          <p className="text-xs text-slate-500 dark:text-neutral-400">연결된 할 일이 모두 완료되면 자동으로 완료됩니다.</p>
+          <h2 className={sectionTitleClass}>주간 목표</h2>
+          <p className="mt-1 text-sm text-muted">연결된 할 일이 모두 완료되면 자동으로 완료됩니다.</p>
         </div>
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3">
           {plan.goals.map((g) => (
             <WeeklyGoalItem key={g._id} goal={g}>
               <button
@@ -147,7 +156,7 @@ function PlanDetail({ plan }: { plan: WeeklyPlan }) {
                   if (g.todoTotal > 0 && !window.confirm(`연결된 할 일 ${g.todoTotal}개의 주간 목표 연결이 해제됩니다. 삭제할까요?`)) return;
                   void saveGoals(currentGoals().filter((item) => item._id !== g._id));
                 }}
-                className="rounded px-2 text-slate-400 dark:text-neutral-500 hover:text-red-600 dark:hover:text-red-400"
+                className={`${iconButtonClass} hover:bg-error-soft hover:text-error`}
               >
                 ✕
               </button>
@@ -157,12 +166,12 @@ function PlanDetail({ plan }: { plan: WeeklyPlan }) {
         {plan.goals.length < MAX_WEEKLY_GOALS && (
           <form onSubmit={onAddGoal} className="flex gap-2">
             <input className={inputClass} aria-label="새 주간 목표" value={newGoal} maxLength={200} onChange={(e) => setNewGoal(e.target.value)} />
-            <button type="submit" className="shrink-0 rounded-lg border border-slate-300 dark:border-neutral-700 px-3 py-2 text-sm hover:bg-slate-50 dark:hover:bg-neutral-800">
+            <button type="submit" className={secondaryButtonClass}>
               목표 추가
             </button>
           </form>
         )}
-        <label className="flex flex-col gap-1 text-sm font-medium">
+        <label className={labelClass}>
           1년 목표
           <select
             className={inputClass}
@@ -181,27 +190,27 @@ function PlanDetail({ plan }: { plan: WeeklyPlan }) {
 
       <WeekGrid plan={plan} />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <section className={`${cardClass} flex flex-col gap-2`}>
-          <label className="flex flex-col gap-1 text-sm font-medium">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <section className={`${cardClass} flex flex-col gap-4`}>
+          <label className={labelClass}>
             메모
             <textarea className={inputClass} rows={4} value={memo} onChange={(e) => setMemo(e.target.value)} />
           </label>
           <div className="flex items-center justify-end gap-3">
-            {saved === "memo" && <span className="text-sm text-green-600 dark:text-green-400">저장됨</span>}
-            <button type="button" className={buttonClass} onClick={() => void saveText("memo", memo)}>
+            {saved === "memo" && <span className="text-sm font-medium text-success">저장됨</span>}
+            <button type="button" className={primaryButtonClass} onClick={() => void saveText("memo", memo)}>
               메모 저장
             </button>
           </div>
         </section>
-        <section className={`${cardClass} flex flex-col gap-2`}>
-          <label className="flex flex-col gap-1 text-sm font-medium">
+        <section className={`${cardClass} flex flex-col gap-4`}>
+          <label className={labelClass}>
             회고
             <textarea className={inputClass} rows={4} value={retro} onChange={(e) => setRetro(e.target.value)} />
           </label>
           <div className="flex items-center justify-end gap-3">
-            {saved === "retrospective" && <span className="text-sm text-green-600 dark:text-green-400">저장됨</span>}
-            <button type="button" className={buttonClass} onClick={() => void saveText("retrospective", retro)}>
+            {saved === "retrospective" && <span className="text-sm font-medium text-success">저장됨</span>}
+            <button type="button" className={primaryButtonClass} onClick={() => void saveText("retrospective", retro)}>
               회고 저장
             </button>
           </div>

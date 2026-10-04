@@ -3,7 +3,15 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/shared/Modal";
-import { inputClass } from "@/components/shared/styles";
+import {
+  errorTextClass,
+  iconButtonClass,
+  inputClass,
+  labelClass,
+  primaryButtonClass,
+  secondaryButtonClass,
+  tertiaryButtonClass,
+} from "@/components/shared/styles";
 import { getWeekStart, parseDate } from "@/lib/date";
 import { useStore } from "@/store";
 import { MAX_WEEKLY_GOALS } from "@/types";
@@ -53,15 +61,15 @@ function WeeklyPlanFormInner({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal open title="새 주간 계획" onClose={onClose}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1 text-sm font-medium">
+      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        <label className={labelClass}>
           주 시작일
           <input type="date" className={inputClass} value={weekStart} onChange={(e) => setWeekStart(e.target.value)} required />
         </label>
         <fieldset className="flex flex-col gap-2">
-          <legend className="mb-1 text-sm font-medium">주간 목표</legend>
+          <legend className="mb-1.5 text-sm font-medium text-ink">주간 목표</legend>
           {goalTexts.map((text, i) => (
-            <div key={i} className="flex gap-2">
+            <div key={i} className="flex items-center gap-2">
               <input
                 className={inputClass}
                 aria-label={`주간 목표 ${i + 1}`}
@@ -73,7 +81,7 @@ function WeeklyPlanFormInner({ onClose }: { onClose: () => void }) {
                 type="button"
                 aria-label={`주간 목표 ${i + 1} 삭제`}
                 onClick={() => setGoalTexts((list) => list.filter((_, j) => j !== i))}
-                className="rounded px-2 text-slate-400 dark:text-neutral-500 hover:text-red-600 dark:hover:text-red-400"
+                className={`${iconButtonClass} hover:bg-error-soft hover:text-error`}
               >
                 ✕
               </button>
@@ -83,16 +91,16 @@ function WeeklyPlanFormInner({ onClose }: { onClose: () => void }) {
             type="button"
             disabled={goalTexts.length >= MAX_WEEKLY_GOALS}
             onClick={() => setGoalTexts((list) => [...list, ""])}
-            className="self-start rounded-lg border border-slate-300 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-slate-50 dark:hover:bg-neutral-800 disabled:opacity-50"
+            className={`${secondaryButtonClass} self-start`}
           >
             목표 추가
           </button>
         </fieldset>
-        <label className="flex flex-col gap-1 text-sm font-medium">
+        <label className={labelClass}>
           메모
           <textarea className={inputClass} rows={3} value={memo} onChange={(e) => setMemo(e.target.value)} />
         </label>
-        <label className="flex flex-col gap-1 text-sm font-medium">
+        <label className={labelClass}>
           1년 목표
           <select className={inputClass} value={goalId} onChange={(e) => setGoalId(e.target.value)}>
             <option value="">연결 안 함</option>
@@ -104,18 +112,18 @@ function WeeklyPlanFormInner({ onClose }: { onClose: () => void }) {
           </select>
         </label>
         {error && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className={errorTextClass}>
             {error}
           </p>
         )}
-        <div className="mt-2 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-neutral-800">
+        <div className="-mx-6 mt-2 flex items-center justify-between gap-2 border-t border-hairline px-6 pt-5">
+          <button type="button" onClick={onClose} className={`${tertiaryButtonClass} -ml-3 underline`}>
             취소
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+            className={primaryButtonClass}
           >
             저장
           </button>

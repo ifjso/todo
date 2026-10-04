@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { emptyStateClass, errorTextClass, pageTitleClass, primaryButtonClass } from "@/components/shared/styles";
 import WeeklyPlanCard from "@/components/weekly/WeeklyPlanCard";
 import WeeklyPlanForm from "@/components/weekly/WeeklyPlanForm";
 import { useStore } from "@/store";
@@ -21,28 +22,28 @@ function WeeklyPage() {
   }, [fetchGoals, goalsLoaded]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">주간 계획</h1>
+    <div className="flex flex-col gap-8">
+      <div className="flex items-center justify-between gap-2">
+        <h1 className={pageTitleClass}>주간 계획</h1>
         <button
           type="button"
           onClick={() => setFormOpen(true)}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+          className={primaryButtonClass}
         >
           새 주간 계획
         </button>
       </div>
       {error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className={errorTextClass}>
           {error}
         </p>
       )}
       {weeklyLoaded && weeklyPlans.length === 0 && (
-        <p className="rounded-xl border border-dashed border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-8 text-center text-sm text-slate-500 dark:text-neutral-400">
+        <p className={emptyStateClass}>
           아직 주간 계획이 없습니다.
         </p>
       )}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {weeklyPlans.map((p) => (
           <WeeklyPlanCard key={p._id} plan={p} goal={goals.find((g) => g._id === p.goalId)} />
         ))}

@@ -25,21 +25,21 @@ export default function KanbanColumn({ status, todos, highlighted, onEdit, onDel
       ref={setNodeRef}
       data-testid={`column-${status}`}
       aria-labelledby={headingId}
-      className={`flex min-h-40 min-w-0 flex-col rounded-xl bg-slate-100 dark:bg-neutral-800 p-3 transition-shadow ${
-        highlighted ? "ring-2 ring-indigo-300" : ""
+      className={`flex min-h-40 min-w-0 flex-col rounded-md bg-surface-soft p-4 transition-shadow ${
+        highlighted ? "ring-2 ring-ink" : ""
       }`}
     >
-      <h2 id={headingId} className="mb-3 flex items-center gap-2 px-1 text-sm font-semibold text-slate-700 dark:text-neutral-300">
+      <h2 id={headingId} className="mb-4 flex items-center gap-2 px-1 text-base font-semibold text-ink">
         {STATUS_LABEL[status]}
-        <span className="rounded-full bg-white dark:bg-neutral-900 px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-neutral-400">{todos.length}</span>
+        <span className="rounded-full bg-canvas px-2 py-0.5 text-xs font-semibold text-muted">{todos.length}</span>
       </h2>
       <SortableContext id={status} items={todos.map((t) => t._id)} strategy={verticalListSortingStrategy}>
-        <ul className="flex flex-1 flex-col gap-2">
+        <ul className="flex flex-1 flex-col gap-3">
           {todos.map((todo) => (
             <TodoCard key={todo._id} todo={todo} onEdit={onEdit} onDelete={onDelete} />
           ))}
           {todos.length === 0 && (
-            <li className="rounded-lg border border-dashed border-slate-300 dark:border-neutral-700 py-6 text-center text-xs text-slate-400 dark:text-neutral-500">
+            <li className="rounded-md border border-dashed border-hairline py-8 text-center text-sm text-muted">
               여기로 끌어다 놓으세요
             </li>
           )}

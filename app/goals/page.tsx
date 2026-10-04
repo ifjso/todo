@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import GoalCard from "@/components/goals/GoalCard";
 import GoalForm from "@/components/goals/GoalForm";
+import { emptyStateClass, errorTextClass, pageTitleClass, primaryButtonClass } from "@/components/shared/styles";
 import { useStore } from "@/store";
 import type { Goal } from "@/types";
 
@@ -39,30 +40,30 @@ export default function GoalsPage() {
   }
 
   return (
-    <div className="flex min-w-0 flex-col gap-4">
+    <div className="flex min-w-0 flex-col gap-8">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-xl font-bold">1년 목표</h1>
+        <h1 className={pageTitleClass}>1년 목표</h1>
         <button
           type="button"
           onClick={openNew}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+          className={primaryButtonClass}
         >
           새 목표
         </button>
       </div>
       {error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className={errorTextClass}>
           {error}
         </p>
       )}
       {!goalsLoaded && !error ? (
-        <p className="text-sm text-slate-500 dark:text-neutral-400">불러오는 중...</p>
+        <p className="text-sm text-muted">불러오는 중...</p>
       ) : goals.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-slate-300 dark:border-neutral-700 p-8 text-center text-sm text-slate-500 dark:text-neutral-400">
+        <p className={emptyStateClass}>
           아직 목표가 없습니다. &quot;새 목표&quot; 버튼으로 1년 목표를 추가해 보세요.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {goals.map((g) => (
             <GoalCard key={g._id} goal={g} onEdit={openEdit} onDelete={onDelete} />
           ))}

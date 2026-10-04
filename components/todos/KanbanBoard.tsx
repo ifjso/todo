@@ -18,6 +18,7 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useState } from "react";
+import { iconButtonClass, pageTitleClass, primaryButtonClass } from "@/components/shared/styles";
 import { groupByStatus, sortForBoard, STATUS_LABEL } from "@/lib/todoSort";
 import { useStore } from "@/store";
 import { TODO_STATUSES, type Todo, type TodoStatus } from "@/types";
@@ -127,25 +128,25 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-2">
-          <h1 className="text-xl font-bold text-slate-900 dark:text-neutral-100">할 일</h1>
-          {!todosLoaded && <span className="text-xs text-slate-400 dark:text-neutral-500">불러오는 중…</span>}
+          <h1 className={pageTitleClass}>할 일</h1>
+          {!todosLoaded && <span className="text-sm text-muted">불러오는 중…</span>}
         </div>
         <button
           type="button"
           onClick={() => setForm({ open: true, todo: null })}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+          className={primaryButtonClass}
         >
           새 할 일
         </button>
       </div>
 
       {error && (
-        <div role="alert" data-testid="board-error" className="flex items-start justify-between gap-3 rounded-lg border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+        <div role="alert" data-testid="board-error" className="flex items-center justify-between gap-3 rounded-sm bg-error-soft px-4 py-3 text-sm text-error">
           <span>{error}</span>
-          <button type="button" aria-label="오류 알림 숨기기" onClick={() => setError(null)} className="text-red-400 hover:text-red-700 dark:hover:text-red-300">
+          <button type="button" aria-label="오류 알림 숨기기" onClick={() => setError(null)} className={`${iconButtonClass} text-error hover:bg-transparent hover:text-error-hover`}>
             ✕
           </button>
         </div>
@@ -166,7 +167,7 @@ export default function KanbanBoard() {
         onDragEnd={onDragEnd}
         onDragCancel={onDragCancel}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {TODO_STATUSES.map((status) => (
             <KanbanColumn
               key={status}

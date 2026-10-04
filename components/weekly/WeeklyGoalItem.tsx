@@ -5,25 +5,23 @@ import type { WeeklyGoalItem as WeeklyGoal } from "@/types";
 export default function WeeklyGoalItem({ goal, children }: { goal: WeeklyGoal; children?: ReactNode }) {
   const status = goal.done ? "완료" : goal.todoTotal === 0 ? "연결된 할 일 없음" : `${goal.todoDone}/${goal.todoTotal}`;
   return (
-    <li data-testid="weekly-goal" data-done={goal.done} className="flex min-w-0 items-center gap-2 text-sm">
+    <li data-testid="weekly-goal" data-done={goal.done} className="flex min-w-0 items-center gap-3 text-base text-ink">
       <span
         aria-hidden
-        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
-          goal.done
-            ? "border-green-600 bg-green-600 text-white dark:border-green-500 dark:bg-green-500"
-            : "border-slate-300 dark:border-neutral-700"
+        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[11px] font-bold ${
+          goal.done ? "border-ink bg-ink text-canvas" : "border-border-strong"
         }`}
       >
         {goal.done && "✓"}
       </span>
       <span
-        className={`min-w-0 flex-1 break-words ${goal.done ? "text-slate-400 line-through dark:text-neutral-500" : ""}`}
+        className={`min-w-0 flex-1 break-words ${goal.done ? "text-muted-soft line-through" : ""}`}
       >
         {goal.text}
       </span>
       <span
         data-testid="weekly-goal-status"
-        className={`shrink-0 text-xs ${goal.done ? "text-green-600 dark:text-green-400" : "text-slate-500 dark:text-neutral-400"}`}
+        className={`shrink-0 text-sm ${goal.done ? "font-semibold text-success" : "text-muted"}`}
       >
         {status}
       </span>

@@ -23,10 +23,12 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       onClick={() => setThemePreference(next)}
       aria-label={`테마: ${LABEL[preference]} (눌러서 ${LABEL[next]}로 변경)`}
       data-theme-preference={preference}
-      className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 ${className}`}
+      className={`flex h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-ink transition-colors hover:bg-surface-soft ${className}`}
     >
-      <span aria-hidden>{ICON[preference]}</span>
-      <span>{LABEL[preference]}</span>
+      <span aria-hidden className="text-base">
+        {ICON[preference]}
+      </span>
+      <span className="hidden sm:inline">{LABEL[preference]}</span>
     </button>
   );
 }

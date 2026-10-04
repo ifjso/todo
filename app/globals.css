@@ -3,16 +3,105 @@
 /* <html class="dark"> 기준으로 dark: 변형을 적용한다 (lib/theme.ts 가 클래스를 관리) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * 디자인 토큰 (Airbnb 스타일: 흰 캔버스 + 잉크 텍스트 + 단일 강조색 Rausch).
+ * 컴포넌트는 bg-canvas, text-ink, border-hairline, bg-primary 처럼 토큰 유틸리티만 쓰고,
+ * 다크 모드는 아래 .dark 블록에서 같은 토큰 값을 바꿔 처리한다.
+ */
 :root {
   color-scheme: light;
+
+  --canvas: #ffffff;
+  --surface-soft: #f7f7f7;
+  --surface-strong: #f2f2f2;
+  --hairline: #dddddd;
+  --hairline-soft: #ebebeb;
+  --border-strong: #c1c1c1;
+
+  --ink: #222222;
+  --body: #3f3f3f;
+  --muted: #6a6a6a;
+  --muted-soft: #929292;
+
+  --primary: #ff385c;
+  --primary-active: #e00b41;
+  --primary-disabled: #ffd1da;
+  --primary-soft: #fff0f3;
+  --on-primary: #ffffff;
+
+  --error: #c13515;
+  --error-hover: #b32505;
+  --error-soft: #fef3f1;
+  --success: #008a05;
+
+  --scrim: rgb(0 0 0 / 0.5);
+  --elevation: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0, rgba(0, 0, 0, 0.1) 0 4px 8px 0;
 }
 
 :root.dark {
   /* 날짜 선택기, select 드롭다운, 스크롤바 등 브라우저 기본 UI 도 어둡게 */
   color-scheme: dark;
+
+  --canvas: #121212;
+  --surface-soft: #1c1c1c;
+  --surface-strong: #262626;
+  --hairline: #333333;
+  --hairline-soft: #2a2a2a;
+  --border-strong: #4a4a4a;
+
+  --ink: #f7f7f7;
+  --body: #dddddd;
+  --muted: #a0a0a0;
+  --muted-soft: #6f6f6f;
+
+  --primary-disabled: #5c1f2c;
+  --primary-soft: rgb(255 56 92 / 0.16);
+
+  --error: #ff7a5c;
+  --error-hover: #ff9a82;
+  --error-soft: rgb(255 122 92 / 0.12);
+  --success: #4cc552;
+
+  --scrim: rgb(0 0 0 / 0.7);
+  --elevation: rgba(255, 255, 255, 0.06) 0 0 0 1px, rgba(0, 0, 0, 0.3) 0 2px 6px 0, rgba(0, 0, 0, 0.4) 0 4px 8px 0;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-strong: var(--surface-strong);
+  --color-hairline: var(--hairline);
+  --color-hairline-soft: var(--hairline-soft);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-muted-soft: var(--muted-soft);
+  --color-primary: var(--primary);
+  --color-primary-active: var(--primary-active);
+  --color-primary-disabled: var(--primary-disabled);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-error: var(--error);
+  --color-error-hover: var(--error-hover);
+  --color-error-soft: var(--error-soft);
+  --color-success: var(--success);
+  --color-scrim: var(--scrim);
+
+  /* 그림자는 단 하나의 단계만 둔다 (떠 있는 카드·드롭다운·모달) */
+  --shadow-float: var(--elevation);
+
+  /* rounded.sm 8px · rounded.md 14px · rounded.xl 32px · rounded.full */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-xl: 32px;
+
+  /* Cereal 대체 서체 Inter, 한글은 시스템 고딕으로 */
+  --font-sans:
+    var(--font-inter), -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", system-ui,
+    "Helvetica Neue", sans-serif;
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
 }

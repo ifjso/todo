@@ -2,16 +2,16 @@ import { PRIORITY_LABEL } from "@/lib/todoSort";
 import type { Priority } from "@/types";
 
 const STYLE: Record<Priority, string> = {
-  high: "bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300",
-  medium: "bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300",
-  low: "bg-slate-100 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400",
+  high: "bg-primary-soft text-primary-active dark:text-primary",
+  medium: "bg-surface-strong text-ink",
+  low: "bg-surface-soft text-muted",
 };
 
 export default function PriorityBadge({ priority }: { priority: Priority }) {
   return (
     <span
       data-priority={priority}
-      className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-semibold ${STYLE[priority]}`}
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold leading-[1.18] ${STYLE[priority]}`}
     >
       {PRIORITY_LABEL[priority]}
     </span>

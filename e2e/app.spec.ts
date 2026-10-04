@@ -203,7 +203,7 @@ test.describe.serial("칸반 정렬과 P1 표시", () => {
     const first = column(page, "todo").getByTestId("todo-card").first();
     await expect(first).toContainText("긴급 작업");
     await expect(first).toContainText("High");
-    await expect(first.locator('[data-overdue="true"]')).toHaveClass(/text-red/);
+    await expect(first.locator('[data-overdue="true"]')).toHaveClass(/text-error/);
 
     await createTodoFromBoard(page, "여유 작업", async (dialog) => {
       await dialog.getByLabel("마감일").fill("2999-12-31");

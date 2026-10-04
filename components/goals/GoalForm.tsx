@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Modal from "@/components/shared/Modal";
-import { inputClass } from "@/components/shared/styles";
+import { errorTextClass, inputClass, labelClass, primaryButtonClass, tertiaryButtonClass } from "@/components/shared/styles";
 import { useStore } from "@/store";
 import type { Goal } from "@/types";
 
@@ -49,28 +49,28 @@ function GoalFormInner({ open, onClose, goal }: GoalFormProps) {
 
   return (
     <Modal open={open} title={goal ? "목표 수정" : "새 목표"} onClose={onClose}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1 text-sm font-medium">
+      <form onSubmit={onSubmit} className="flex flex-col gap-5">
+        <label className={labelClass}>
           제목
           <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} autoFocus required maxLength={200} />
         </label>
-        <label className="flex flex-col gap-1 text-sm font-medium">
+        <label className={labelClass}>
           설명
           <textarea className={inputClass} rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
         {error && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className={errorTextClass}>
             {error}
           </p>
         )}
-        <div className="mt-2 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm text-slate-600 dark:text-neutral-400 hover:bg-slate-100 dark:hover:bg-neutral-800">
+        <div className="-mx-6 mt-2 flex items-center justify-between gap-2 border-t border-hairline px-6 pt-5">
+          <button type="button" onClick={onClose} className={`${tertiaryButtonClass} -ml-3 underline`}>
             취소
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+            className={primaryButtonClass}
           >
             저장
           </button>
